@@ -92,25 +92,3 @@ export async function GET(req: NextRequest) {
     byMember,
   });
 }
-
-
-// {
-//   "month": 6,
-//   "year": 2025,
-//   "totals": {
-//     "income": 4200,
-//     "expense": 3050
-//   },
-//   "byMember": {
-//     "uid1": {
-//       "name": "Alice",
-//       "income": 2500,
-//       "expense": 1500
-//     },
-//     "uid2": {
-//       "name": "Bob",
-//       "income": 1700,
-//       "expense": 1550
-//     }
-//   }
-// }

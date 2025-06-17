@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { authMiddleware } from '@/lib/authMiddleware';
 import { NextRequest, NextResponse } from 'next/server';
-import { User, Expense } from '@/app/generated/prisma';
+import { Expense } from '@prisma/client';
 
 type MemberWithExpenses = {
   id: string;

@@ -13,7 +13,8 @@ export async function authMiddleware(req: NextRequest) {
   try {
     const decoded = verifyToken(token);
     return decoded;
-  } catch {
+  } catch (error) {
+    console.log("error ==> ", error)
     return NextResponse.json({ error: 'Invalid token' }, { status: 403 });
   }
 }

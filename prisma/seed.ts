@@ -4,15 +4,15 @@ const prisma = new PrismaClient();
 
 async function main() {
   const defaultCategories = [
-    'Food',
-    'Transport',
-    'Bills',
-    'Health',
-    'Shopping',
-    'Entertainment',
-    'Education',
-    'Salary',
-    'Freelance',
+    "Food",
+    "Transport",
+    "Bills",
+    "Health",
+    "Shopping",
+    "Entertainment",
+    "Education",
+    "Salary",
+    "Freelance",
   ];
 
   for (const name of defaultCategories) {

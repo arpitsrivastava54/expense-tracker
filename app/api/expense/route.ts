@@ -6,7 +6,7 @@ import { z } from 'zod';
 const expenseSchema = z.object({
   amount: z.number().positive(),
   type: z.enum(['INCOME', 'EXPENSE']),
-  date: z.string().refine(date => !isNaN(Date.parse(date)), { message: 'Invalid date' }),
+  date: z.string().refine(date => !isNaN(Date.parse(date)), { message: 'Invalid date' }).optional().default(new Date().toISOString()),
   categoryId: z.string().optional(),
   customCategory: z.string().optional(),
   note: z.string().optional(),

@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'User not found' }, { status: 404 });
   }
 
-  const isValid = await bcrypt.compare(password, user.password);
+  const isValid = await bcrypt.compare(password, user.password || '');
   if (!isValid) {
     return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
   }

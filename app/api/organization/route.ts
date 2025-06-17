@@ -38,3 +38,16 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({ organization });
 }
+
+export async function GET(req: NextRequest) {
+  const user = await authMiddleware(req) as { id: string };
+
+  if (!user || user instanceof Response) return user;
+
+  const org = await prisma.organization.findMany();
+
+  if (!org) {
+    return NextResponse.json({ error: 'No organization found' }, { status: 404 });
+  }
+  return NextResponse.json({ data: org });
+}

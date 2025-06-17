@@ -11,6 +11,8 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Only parents can view pending members' }, { status: 403 });
   }
 
+  console.log("parent ==> ", parent);
+
   const pendingMembers = await prisma.user.findMany({
     where: {
       organizationId: parent.organizationId,
@@ -23,6 +25,8 @@ export async function GET(req: NextRequest) {
       phone: true,
     },
   });
+
+  console.log(pendingMembers);
 
   return NextResponse.json({ pendingMembers });
 }
