@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+enum Role {
+  PARENT
+  MEMBER
+}
+
+enum Status {
+  PENDING
+  APPROVED
+}
+
+model User {
+  id             String   @id @default(cuid())
+  email          String?  @unique
+  phone          String?  @unique
+  name           String
+  role           Role     @default(MEMBER)
+  status         Status   @default(PENDING)
+  organizationId String?
+  organization   Organization? @relation("OrganizationMembers", fields: [organizationId], references: [id])
+  ownedOrganizations Organization[] @relation("OrganizationOwner")
+  expenses       Expense[] @relation("UserExpenses")
+  createdAt      DateTime @default(now())
+  password       String?
+}
+
+model Organization {
+  id           String   @id @default(cuid())
+  name         String
+  ownerId      String
+  owner        User     @relation("OrganizationOwner", fields: [ownerId], references: [id])
+  referralCode String   @unique
+  members      User[]   @relation("OrganizationMembers")
+  expenses     Expense[] @relation("OrganizationExpenses")
+  categories   Category[] @relation("OrganizationCategories")
+  createdAt    DateTime @default(now())
+}
+
+model Expense {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation("UserExpenses", fields: [userId], references: [id])
+  organizationId  String
+  organization    Organization @relation("OrganizationExpenses", fields: [organizationId], references: [id])
+  amount          Float
+  type            String // 'INCOME' or 'EXPENSE'
+  categoryId      String?
+  category        Category? @relation(fields: [categoryId], references: [id])
+  customCategory  String?
+  date            DateTime
+  note            String?
+  receiptUrl      String?
+  createdAt       DateTime @default(now())
+}
+
+model Category {
+  id              String   @id @default(cuid())
+  name            String
+  organizationId  String?
+  organization    Organization? @relation("OrganizationCategories", fields: [organizationId], references: [id])
+  isDefault       Boolean  @default(false)
+  expenses        Expense[]
+}
